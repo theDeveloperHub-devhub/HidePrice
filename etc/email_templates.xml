@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="hideprice_emailoptions_send" label="Hide Price" file="hideprice_form.html"
+              type="html" module="DeveloperHub_HidePrice" area="frontend"/>
+    <template id="price_send" label="Hide Price" file="price_form.html" type="html"
+              module="DeveloperHub_HidePrice" area="frontend"/>
+</config>

@@ -1,0 +1,14 @@
+{
+    "hide_price": {
+        "column": {
+            "id": true,
+            "title": true,
+            "status": true,
+            "email": true,
+            "name": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

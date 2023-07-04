@@ -1,0 +1,66 @@
+<?php
+
+/** @var $block View */
+/** @var $escaper Escaper */
+
+use DeveloperHub\HidePrice\Block\Customer;
+use Magento\Catalog\Block\Product\View;
+use Magento\Framework\Escaper;
+
+$customBlock = $block->getLayout()->createBlock(Customer::class);
+$data = $customBlock->getCustomer();
+$authorizationBlock = $block->getLayout()->createBlock(Magento\Customer\Block\Account\AuthorizationLink::class);
+$dataPostParam = '';
+if ($authorizationBlock->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable()) :?>
+    <div class="box-tocart">
+        <div class="fieldset">
+            <?php if ($block->shouldRenderQuantity()) :?>
+                <div class="field qty">
+                    <label class="label" for="qty"><span><?= $escaper->escapeHtml(__('Qty')) ?></span></label>
+                    <div class="control">
+                        <input type="number"
+                               name="qty"
+                               id="qty"
+                               min="0"
+                               value="<?= $block->getProductDefaultQty() * 1 ?>"
+                               title="<?= $escaper->escapeHtmlAttr(__('Qty')) ?>"
+                               class="input-text qty"
+                               data-validate="<?= $escaper->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                        />
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="actions">
+                <?php if ($data):?>
+                    <button type="submit"
+                            title="<?= $escaper->escapeHtmlAttr($buttonTitle) ?>"
+                            class="action primary tocart"
+                            id="product-addtocart-button" disabled>
+                        <span><?= $escaper->escapeHtml($buttonTitle) ?></span>
+                    </button>
+                    <?= $block->getChildHtml('', true) ?>
+                <?php else: ?>
+                    <button type="submit"
+                            title="<?= $escaper->escapeHtmlAttr(__('sign in')) ?>"
+                            class="link authorization-link">
+                        <a <?= /* @noEscape */ $authorizationBlock->getLinkAttributes() ?>
+                            <?= /* @noEscape */ $dataPostParam ?>><?= $escaper->escapeHtml($authorizationBlock->getLabel()) ?></a>
+                    </button>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>

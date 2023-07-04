@@ -1,0 +1,83 @@
+<?php
+
+/** @var $block Amount
+ * @var Escaper $escaper
+ */
+
+use DeveloperHub\HidePrice\Helper\Data;
+use Magento\Framework\Escaper;
+use Magento\Framework\Pricing\Render\Amount;
+
+$authorizationBlock = $block->getLayout()->createBlock(Magento\Catalog\Block\Product\View::class);
+$_product = $authorizationBlock->getProduct();
+$helper = $this->helper(Data::class);
+$configFieldEnable = $helper->getConfigFieldEnable();
+?>
+<span class="price-container <?= $escaper->escapeHtmlAttr($block->getAdjustmentCssClasses()) ?>"
+        <?= $block->getSchema() ? ' itemprop="offers" itemscope itemtype="http://schema.org/Offer"' : '' ?>>
+    <?php if ($configFieldEnable == 1 && $_product):?>
+        <button id="hide-price" class= 'btn btn-secondary hide-price'
+                data-order-name="<?php echo $block->getPrice()->getProduct()->getName() ?>"
+                data-order-id = "<?php echo $block->getPrice()->getProduct()->getId()?>"
+                data-order-price = "<?php echo $block->getPrice()->getProduct()['price']?>"
+                data-mage-init='{"example-modal": {"target": "#modal-content"}}'>
+            <?php echo 'Call For Price'  ?>
+        </button>
+    <?php else:?>
+        <?php if ($configFieldEnable == 1):?>
+            <button id="hide-price" class= 'btn btn-secondary hide-price'
+                    data-order-name="<?php echo $block->getPrice()->getProduct()->getName(); ?>"
+                    data-order-id = "<?php echo $block->getPrice()->getProduct()->getId()?>"
+                    data-order-price = "<?php echo $block->getPrice()->getProduct()->getData()['price']?>"
+                    data-mage-init='{"example-modal": {"target": "#modal-content"}}'>
+            <?php echo 'Call For Price'  ?>
+            </button>
+        <?php else: ?>
+            <?php if ($block->getDisplayLabel()) :?>
+                <span class="price-label"><?= $escaper->escapeHtml($block->getDisplayLabel()) ?></span>
+            <?php endif; ?>
+            <span <?php if ($block->getPriceId()) :?> id="<?= $escaper->escapeHtmlAttr($block->getPriceId()) ?>"<?php endif;?>
+                <?= ($block->getPriceDisplayLabel()) ? 'data-label="' . $escaper->escapeHtmlAttr($block->getPriceDisplayLabel() . $block->getPriceDisplayInclExclTaxes()) . '"' : '' ?>
+                data-price-amount="<?= $escaper->escapeHtmlAttr($block->getDisplayValue()) ?>"
+                data-price-type="<?= $escaper->escapeHtmlAttr($block->getPriceType()) ?>"
+                class="price-wrapper <?= $escaper->escapeHtmlAttr($block->getPriceWrapperCss()) ?>"
+                ><?= $escaper->escapeHtml($block->formatCurrency($block->getDisplayValue(), (bool)$block->getIncludeContainer()), ['span']) ?></span>
+                <?php if ($block->hasAdjustmentsHtml()) :?>
+                    <?= $block->getAdjustmentsHtml() ?>
+                <?php endif; ?>
+                <?php if ($block->getSchema()) :?>
+                    <meta itemprop="price" content="<?= $escaper->escapeHtmlAttr($block->getDisplayValue()) ?>" />
+                    <meta itemprop="priceCurrency" content="<?= $escaper->escapeHtmlAttr($block->getDisplayCurrencyCode()) ?>" />
+                <?php endif; ?>
+            </span>
+        <?php endif;?>
+<?php endif;?>
+<div id="devhub-cancel-order-modal" style="display: none;">
+    <form action="" class="form cancel-order" id="hide-price-form" method="post"
+          data-hasrequired="<?= $escaper->escapeHtml(__('* Required Fields')) ?>"
+          data-mage-init='{"validation":{}}'>
+        <fieldset class="fieldset">
+            <div class="control">
+                <input type="hidden" name="id" value="" class="id">
+                <input type="hidden" name="price" value="" class="price">
+                <?php $formKey = $block->getFormKey()?>
+                <input type="hidden" name="form_key" value="<?= $escaper->escapeHtml($formKey) ?>" class="form_key">
+            </div>
+            <div class="field required">
+                <div class="control">
+                    <input type="text" name="product-name" value="" class="product-name" disabled>
+                    <label for="">Name</label>
+                    <input type="text" name="name" class="input-name" id="input_name"/>
+                    <label for="">Email</label>
+                    <input type="text" name="email" class="input-email" id="input_email"/>
+                    <label for="">Number</label>
+                    <input type="text" name="number" class="input-num" id="input_num"/>
+                    <label>
+                        Request Details
+                        <textarea class="devhub-cancel-order-reason input-text" name="comment" data-validate="{required:true}"></textarea>
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

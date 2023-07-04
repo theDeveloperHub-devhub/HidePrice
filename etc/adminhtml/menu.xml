@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DeveloperHub_HidePrice::menu" title="Hide Price" module="DeveloperHub_HidePrice" sortOrder="20" resource="DeveloperHub_HidePrice::custom_resource" />
+        <add id="DeveloperHub_HidePrice::DeveloperHub" title="Price" module="DeveloperHub_HidePrice" sortOrder="999" parent="DeveloperHub_HidePrice::menu"
+             action="developer_hub/create/create" resource="DeveloperHub_HidePrice::DeveloperHub" />
+    </menu>
+</config>

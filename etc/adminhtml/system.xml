@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <system>
+        <tab id="developer_hub" translate="label" sortOrder="10">
+            <label>Developer Hub</label>
+        </tab>
+        <section id="price" translate="label" sortOrder="130" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Developer Hub</label>
+            <class>separator-top</class>
+            <tab>general</tab>
+            <resource>DevHub_OrderNote::DevHub</resource>
+            <group id="hide_price" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Configuration Options For Hide Price</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

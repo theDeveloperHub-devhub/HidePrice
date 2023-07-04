@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="hide_price_data_source" xsi:type="string">HidePrice</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="HidePrice" type="DeveloperHub\HidePrice\Ui\DataProvider\Reviews\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">hide_price</argument>
+            <argument name="resourceModel" xsi:type="string">DeveloperHub\HidePrice\Model\ResourceModel\Price</argument>
+        </arguments>
+    </virtualType>
+    <preference for="DeveloperHub\HidePrice\Api\Data\HidePriceInterface" type="DeveloperHub\HidePrice\Model\Price" />
+    <preference for="DeveloperHub\HidePrice\Api\HidePriceRepositoryInterface" type="DeveloperHub\HidePrice\Model\PriceRepository" />
+    <preference for="Magento\CatalogWidget\Block\Product\ProductsList"
+                type="DeveloperHub\HidePrice\Block\Product\ProductsList" />
+
+</config>
